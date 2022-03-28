@@ -10,11 +10,13 @@ var gamePlaying = false;
 var tonePlaying = false;
 var volume = 0.5; //must be between 0.0 and 1.0
 var guessCounter = 0;
+var trackMistakes = 0;
 
 function startGame(){
     //initialize game variables
     progress = 0;
     gamePlaying = true;
+    trackMistakes = 0;
   //Swap the Start and Stop Buttons
     document.getElementById("startBtn").classList.add("hidden");
     document.getElementById("stopBtn").classList.remove("hidden");
@@ -83,7 +85,9 @@ function guess(btn) {
       guessCounter++; //next guess..
     }
   }else {
-    loseGame(); //incorrect guess, you lose!
+    if(trackMistakes < 2){ trackMistakes++;
+    alert("You have made: " + trackMistakes + " strike(s)")}
+    else loseGame(); //incorrect guess, you lose!
   }
 }
 
