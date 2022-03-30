@@ -11,6 +11,9 @@ var tonePlaying = false;
 var volume = 0.5; //must be between 0.0 and 1.0
 var guessCounter = 0;
 var trackMistakes = 0;
+var timelimit = 20;
+var timer;
+var currentTime;
 
 function startGame(){
     //initialize game variables
@@ -20,21 +23,24 @@ function startGame(){
   //Swap the Start and Stop Buttons
     document.getElementById("startBtn").classList.add("hidden");
     document.getElementById("stopBtn").classList.remove("hidden");
+    document.getElementById("countdown").classList.remove("hidden");
     playClueSequence();
+
 }
 
 function stopGame(){
+  clearInterval(timer);
   gamePlaying = false;
   document.getElementById("startBtn").classList.remove("hidden");
   document.getElementById("stopBtn").classList.add("hidden");
 }
 
 function lightButton(btn) {
-  document.getElementById("button"+btn).classList.add("lit")
+  document.getElementById("button"+ btn).classList.add("lit")
 }
 
 function clearButton(btn) {
-  document.getElementById("button"+btn).classList.remove("lit")
+  document.getElementById("button"+ btn).classList.remove("lit")
 }
 
 function playSingleClue(btn) {
@@ -46,24 +52,52 @@ function playSingleClue(btn) {
 }
 
 function playClueSequence(){
+  console.log('Entered playClueSequence');
   guessCounter = 0;
   let delay = nextClueWaitTime; //set delay to initial wait time
   for(let i=0;i<=progress;i++) { //for each clue that is revealed so far
-    console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
-    setTimeout(playSingleClue,delay,pattern[i]) // set a timeout to play that clue
-    delay += clueHoldTime
+    console.log("play single clue: " + pattern[i] + " in " + delay + "ms");
+    setTimeout(playSingleClue,delay,pattern[i]); // set a timeout to play that clue
+    setTimeout(() => {
+    if(i=== progress){
+      console.log('played final clue ...');
+      currentTime = timelimit;
+        timer = setInterval(()=>{
+        myTimer();
+      },1000);
+    }
+    
+    }, delay);
+    delay += clueHoldTime;
     delay += cluePauseTime;
   }
+  console.log('sequence complete');
+}
+
+function myTimer(){
+  console.log('counting down');
+  currentTime = (currentTime - 1);
+  
+  if(currentTime <= 0){
+    currentTime = 0;
+    document.getElementById("countdown").innerHTML = ('Time remaining: ' + currentTime);
+    
+    clearInterval(timer);
+    loseGame();
+  }
+  document.getElementById("countdown").innerHTML = ('Time remaining: ' + currentTime);
 }
 
 function loseGame(){
   stopGame();
   alert("Game Over. You lost.");
+  
 }
 
 function winGame(){
   stopGame();
-  alert("Game Over. You Won!")
+  alert("Game Over. You Won!");
+
 }
 
 function guess(btn) {
@@ -75,11 +109,13 @@ function guess(btn) {
   //add game logic here
   if(pattern[guessCounter] == btn) {
     if(guessCounter == progress) {
-      if(progress == pattern.length - 1) {
+      if(progress == pattern.length - 1 ) {
         winGame(); //you win!
       } else{
+          clearInterval(timer); //guess correctly so stop timer
           progress++; //correct! Next..
           playClueSequence();
+
       }
     } else {
       guessCounter++; //next guess..
@@ -87,7 +123,7 @@ function guess(btn) {
   }else {
     if(trackMistakes < 2){ trackMistakes++;
     alert("You have made: " + trackMistakes + " strike(s)")}
-    else loseGame(); //incorrect guess, you lose!
+    else loseGame(); //incorrect guess, you lose
   }
 }
 
