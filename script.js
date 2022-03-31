@@ -83,7 +83,7 @@ function myTimer(){
     document.getElementById("countdown").innerHTML = ('Time remaining: ' + currentTime);
     
     clearInterval(timer);
-    loseGame();
+    guess();
   }
   document.getElementById("countdown").innerHTML = ('Time remaining: ' + currentTime);
 }
@@ -121,8 +121,11 @@ function guess(btn) {
       guessCounter++; //next guess..
     }
   }else {
-    if(trackMistakes < 2){ trackMistakes++;
-    alert("You have made: " + trackMistakes + " strike(s)")}
+    if(trackMistakes < 2 ||trackMistakes <2 && currentTime <=0){
+      trackMistakes++;                            
+      alert("You have made: " + trackMistakes + " strike(s)");
+      clearInterval(timer);
+      playClueSequence();}
     else loseGame(); //incorrect guess, you lose
   }
 }
