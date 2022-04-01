@@ -66,7 +66,7 @@ https://www.w3schools.com/js/js_htmldom_html.asp
 
 ## Interview Recording URL Link
 
-[My 5-minute Interview Recording](your-link-here)
+[My 5-minute Interview Recording](https://drive.google.com/file/d/1rx2meqsTHtunMKQZO5AI50gB-6htAaas/view?usp=sharing)
 
 
 ## License
