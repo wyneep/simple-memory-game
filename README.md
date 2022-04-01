@@ -71,7 +71,7 @@ https://www.w3schools.com/js/js_htmldom_html.asp
 
 ## License
 
-    Copyright [YOUR NAME]
+    Copyright [WYNEE PINTADO]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
